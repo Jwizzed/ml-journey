@@ -1,0 +1,1 @@
+1) In NLP/Natural Language Processing with Disaster Tweets: I should try to train with the full datas.
