@@ -1,8 +1,9 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+import numpy as np
 
 
-def calculate_results(y_true, y_pred):
+def calculate_results(y_true: np.ndarray, y_pred: np.ndarray):
     """
     Calculates model accuracy, precision, recall and f1 score of a binary classification model.
     Args:
@@ -20,24 +21,24 @@ def calculate_results(y_true, y_pred):
     return model_results
 
 
-def compare_results_df(old_pred, new_pred, true_val):
+def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.ndarray):
     """
     Compare old and new predictions with true values
     **Note: Diff is New - Old
-    :param old_pred:
-    :param new_pred:
-    :param true_val:
-    :return: dataframe
+    :param old_pred: old predictions
+    :param new_pred: new predictions
+    :param true_val: true values
+    :return: dataframe of old, new and diff
     """
     old_results = calculate_results(true_val, old_pred)
     new_results = calculate_results(true_val, new_pred)
 
     df = pd.DataFrame(
-        columns=["Old", "New", "Diff(%)"],
+        columns=["Old", "New", "Diff"],
         index=["accuracy", "precision", "recall", "f1"])
     df["Old"] = old_results
     df["New"] = new_results
-    df["Diff(%)"] = round((df["New"] - df["Old"]) * 100, 4)
+    df["Diff"] = round((df["New"] - df["Old"]), 4)
     return df
 
 
