@@ -52,7 +52,7 @@ def report_dir(dir_path):
     print("*********************************************************")
     for dir_path, dir_names, file_names in os.walk(dir_path):
         if ".git" not in dir_path:
-            print(f"Has {len(dir_names)} folder(s): {dir_names} \n"
+            print(f"In {dir_path}\n"
+                  f"Has {len(dir_names)} folder(s): {dir_names} \n"
                   f"{len(file_names)} file(s): {file_names}\n"
-                  f"In {dir_path}\n"
                   f"*********************************************************")
