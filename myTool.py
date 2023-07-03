@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
+import os
 
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray):
@@ -42,3 +43,11 @@ def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.
     return df
 
 
+def report_dir(dir_path):
+    """
+    Walks through dir_path returning its contents
+    :param dir_path:
+    :return: None
+    """
+    for _, dir_names, filenames in os.walk(dir_path):
+        print(f"Has {len(dir_names)} file(s): {filenames}")
