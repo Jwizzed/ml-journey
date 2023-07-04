@@ -3,6 +3,7 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
 from typing import List
 
+
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     """
     Calculates model accuracy, precision, recall and f1 score of a binary classification model.
