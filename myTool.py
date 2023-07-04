@@ -1,8 +1,7 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
-import os
-
+from typing import List
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     """
@@ -69,3 +68,13 @@ def unzip(file_path: str) -> None:
     zip_ref.extractall()
     zip_ref.close()
     return None
+
+
+def get_lines(file_name: str) -> List[str]:
+    """
+    Read the contents of the file and return them as a list
+    :param file_name:
+    :return:
+    """
+    with open(file_name, "r") as f:
+        return f.readlines()
