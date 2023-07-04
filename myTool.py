@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 
-def calculate_results(y_true: np.ndarray, y_pred: np.ndarray):
+def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     """
     Calculates model accuracy, precision, recall and f1 score of a binary classification model.
     Args:
@@ -22,7 +22,7 @@ def calculate_results(y_true: np.ndarray, y_pred: np.ndarray):
     return model_results
 
 
-def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.ndarray):
+def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.ndarray) -> pd.DataFrame:
     """
     Compare old and new predictions with true values
     **Note: Diff is New - Old
@@ -43,7 +43,7 @@ def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.
     return df
 
 
-def report_dir(dir_path):
+def report_dir(dir_path: str) -> None:
     """
     Walks through dir_path returning its contents
     :param dir_path:
@@ -56,3 +56,16 @@ def report_dir(dir_path):
                   f"Has {len(dir_names)} folder(s): {dir_names} \n"
                   f"{len(file_names)} file(s): {file_names}\n"
                   f"*********************************************************")
+
+
+def unzip(file_path: str) -> None:
+    """
+    Unzips a file
+    :param file_path:
+    :return: None
+    """
+    import zipfile
+    zip_ref = zipfile.ZipFile(file_path, "r")
+    zip_ref.extractall()
+    zip_ref.close()
+    return None
