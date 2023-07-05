@@ -88,7 +88,7 @@ def evaluate_preds(y_true, y_pred):
     :param y_true:
     :param y_pred:
     :return: None
-    >> evaluate_preds(y_test[1:], naive_forecast)
+    >> evaluate_preds(y_test[1:], naive_forecast) [1:] in here bc we need the same shape
     """
     y_true = tf.cast(y_true, dtype=tf.float32)
     y_pred = tf.cast(y_pred, dtype=tf.float32)
