@@ -100,6 +100,13 @@ def evaluate_preds(y_true, y_pred):
     mape = tf.keras.metrics.mean_absolute_percentage_error(y_true, y_pred)
     mase = mae / tf.reduce_mean(tf.abs(y_true[1:] - y_true[:-1])) # [1:] is a formula, don't worry about it.
 
+    if mae.ndim > 0:  # if mae isn't already a scalar, reduce it to one by aggregating tensors to mean
+        mae = tf.reduce_mean(mae)
+        mse = tf.reduce_mean(mse)
+        rmse = tf.reduce_mean(rmse)
+        mape = tf.reduce_mean(mape)
+        mase = tf.reduce_mean(mase)
+        
     return {"mae": mae.numpy(),
             "mse": mse.numpy(),
             "rmse": rmse.numpy(),
