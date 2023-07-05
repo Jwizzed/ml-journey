@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
 from typing import List
+import tensorflow as tf
 
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
@@ -79,3 +80,28 @@ def get_lines(file_name: str) -> List[str]:
     """
     with open(file_name, "r") as f:
         return f.readlines()
+
+
+def evaluate_preds(y_true, y_pred):
+    """
+    Evaluates the difference between true labels[1:] and predicted labels
+    :param y_true:
+    :param y_pred:
+    :return: None
+    >> evaluate_preds(y_test[1:], naive_forecast)
+    """
+    y_true = tf.cast(y_true, dtype=tf.float32)
+    y_pred = tf.cast(y_pred, dtype=tf.float32)
+
+    mae = tf.keras.metrics.mean_absolute_error(y_true, y_pred)
+    mse = tf.keras.metrics.mean_squared_error(y_true,
+                                              y_pred)
+    rmse = tf.sqrt(mse)
+    mape = tf.keras.metrics.mean_absolute_percentage_error(y_true, y_pred)
+    mase = mae / tf.reduce_mean(tf.abs(y_true[1:] - y_true[:-1])) # [1:] is a formula, don't worry about it.
+
+    return {"mae": mae.numpy(),
+            "mse": mse.numpy(),
+            "rmse": rmse.numpy(),
+            "mape": mape.numpy(),
+            "mase": mase.numpy()}
