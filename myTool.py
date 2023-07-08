@@ -3,6 +3,7 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
 from typing import List
 import tensorflow as tf
+import os
 
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
