@@ -106,7 +106,7 @@ def evaluate_preds(y_true, y_pred):
         rmse = tf.reduce_mean(rmse)
         mape = tf.reduce_mean(mape)
         mase = tf.reduce_mean(mase)
-        
+
     return {"mae": mae.numpy(),
             "mse": mse.numpy(),
             "rmse": rmse.numpy(),
