@@ -1,12 +1,13 @@
-import pandas as pd
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-import numpy as np
-from typing import List
-import tensorflow as tf
 import os
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import random
+from typing import List
+
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
@@ -27,7 +28,8 @@ def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     return model_results
 
 
-def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray, true_val: np.ndarray) -> pd.DataFrame:
+def compare_results_df(old_pred: np.ndarray, new_pred: np.ndarray,
+                       true_val: np.ndarray) -> pd.DataFrame:
     """
     Compare old and new predictions with true values
     **Note: Diff is New - Old
@@ -102,7 +104,8 @@ def evaluate_preds(y_true, y_pred):
                                               y_pred)
     rmse = tf.sqrt(mse)
     mape = tf.keras.metrics.mean_absolute_percentage_error(y_true, y_pred)
-    mase = mae / tf.reduce_mean(tf.abs(y_true[1:] - y_true[:-1])) # [1:] is a formula, don't worry about it.
+    mase = mae / tf.reduce_mean(tf.abs(
+        y_true[1:] - y_true[:-1]))  # [1:] is a formula, don't worry about it.
 
     if mae.ndim > 0:  # if mae isn't already a scalar, reduce it to one by aggregating tensors to mean
         mae = tf.reduce_mean(mae)
@@ -135,3 +138,47 @@ def view_random_image(target_dir: str, target_class: str):
     plt.axis("off")
     print(f"Image shape: {img.shape}")
     return img
+
+
+def history_plot(model_history):
+    """
+    Plots model history of accuracy and loss over time
+    :param model_history: History object containing training/validation metrics
+    :return: None
+    >> history_plot(history_3)
+    """
+    tacc = model_history.history['accuracy']
+    tloss = model_history.history['loss']
+    vacc = model_history.history['val_accuracy']
+    vloss = model_history.history['val_loss']
+
+    epochs = np.arange(1, len(tacc) + 1)
+
+    index_loss = np.argmin(vloss)
+    val_lowest = vloss[index_loss]
+    index_acc = np.argmax(vacc)
+    acc_highest = vacc[index_acc]
+
+    plt.style.use('fivethirtyeight')
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 6))
+
+    axes[0].plot(epochs, tloss, 'r', label='Training loss')
+    axes[0].plot(epochs, vloss, 'g', label='Validation loss')
+    axes[0].scatter(index_loss + 1, val_lowest, s=150, c='blue',
+                    label=f'Best epoch = {index_loss + 1}')
+    axes[0].set_title('Training and Validation Loss')
+    axes[0].set_xlabel('Epochs')
+    axes[0].set_ylabel('Loss')
+    axes[0].legend()
+
+    axes[1].plot(epochs, tacc, 'r', label='Training Accuracy')
+    axes[1].plot(epochs, vacc, 'g', label='Validation Accuracy')
+    axes[1].scatter(index_acc + 1, acc_highest, s=150, c='blue',
+                    label=f'Best epoch = {index_acc + 1}')
+    axes[1].set_title('Training and Validation Accuracy')
+    axes[1].set_xlabel('Epochs')
+    axes[1].set_ylabel('Accuracy')
+    axes[1].legend()
+
+    plt.tight_layout()
+    plt.show()
