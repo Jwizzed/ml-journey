@@ -6,8 +6,11 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import requests
 import tensorflow as tf
+from PIL import Image, ImageDraw
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from transformers import pipeline
 
 
 def calculate_results(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
@@ -182,3 +185,32 @@ def history_plot(model_history):
 
     plt.tight_layout()
     plt.show()
+
+
+def plot_image_detector(img_url: str = "") -> None:
+    """
+    Plot object detection boxes by using huggingface's transformers pipeline.
+    :param img_url: String of image url
+    :return:
+    """
+
+    image_data = requests.get(img_url, stream=True).raw
+    image = Image.open(image_data)
+
+    # Allocate a pipeline for object detection
+    object_detector = pipeline('object-detection')
+    results = object_detector(image)
+
+    # Draw bounding boxes on the image
+    draw = ImageDraw.Draw(image)
+    for result in results:
+        label = result['label']
+        score = result['score']
+        box = result['box'].values()
+        x1, y1, x2, y2 = box
+        draw.rectangle([(x1, y1), (x2, y2)], outline='red')
+        draw.text((x1, y1 - 10), f'{label}: {score:.2f}', fill='green')
+
+    # Display the image with bounding boxes
+    image.show()
+    return None
