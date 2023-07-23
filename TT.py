@@ -21,9 +21,10 @@ def report_dir(dir_path: str) -> None:
                   f"*********************************************************")
 
 
-def unzip(file_path: str) -> None:
+def unzip(file_path: str, delete_original: bool = False) -> None:
     """
     Unzips a file
+    :param delete_original:
     :param file_path:
     :return: None
     """
@@ -31,6 +32,9 @@ def unzip(file_path: str) -> None:
     zip_ref = zipfile.ZipFile(file_path, "r")
     zip_ref.extractall()
     zip_ref.close()
+    if delete_original:
+        os.remove(file_path)
+    print("Unzipped Successfully")
     return None
 
 
