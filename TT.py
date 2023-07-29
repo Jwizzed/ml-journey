@@ -4,6 +4,9 @@ import random
 from typing import List
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def report_dir(dir_path: str) -> None:
@@ -65,3 +68,33 @@ def view_random_image(target_dir: str, target_class: str):
     plt.axis("off")
     print(f"Image shape: {img.shape}")
     return img
+
+
+def visualize_shape_difference(df1, df2):
+    """
+    Visualize the difference in shape between two DataFrames
+    :param df1:
+    :param df2:
+    :return:
+    >> visualize_shape_difference(orig_df, df)
+    """
+    # Get the shapes of the DataFrames
+    shape_df1 = df1.shape
+    shape_df2 = df2.shape
+
+    # Create a DataFrame to store the shape information
+    df_shape = pd.DataFrame({'DataFrame': ['DataFrame 1', 'DataFrame 2'],
+                             'Rows': [shape_df1[0], shape_df2[0]],
+                             'Columns': [shape_df1[1], shape_df2[1]]})
+
+    # Melt the DataFrame for visualization
+    df_shape_melted = df_shape.melt(id_vars='DataFrame', var_name='Category', value_name='Count')
+
+    # Create a bar plot using Seaborn
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x='Category', y='Count', hue='DataFrame', data=df_shape_melted, palette=['red', 'green'])
+    plt.xlabel('Category')
+    plt.ylabel('Count')
+    plt.title('Difference in Shape between the Two DataFrames')
+    plt.legend(title='DataFrames', loc='upper right')
+    plt.show()
