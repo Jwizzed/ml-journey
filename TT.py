@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 
 def report_dir(dir_path: str) -> None:
@@ -117,4 +118,7 @@ def info():
 
     # Create the DataFrame
     df = pd.DataFrame(data)
-    print(df)
+
+    # Print the DataFrame in a nice tabular format
+    print(tabulate(df, headers='keys', tablefmt='grid', showindex=False))
+
