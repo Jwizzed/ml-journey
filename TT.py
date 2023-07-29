@@ -70,7 +70,7 @@ def view_random_image(target_dir: str, target_class: str):
     return img
 
 
-def visualize_shape_difference(df1, df2):
+def plot_shape_difference(df1, df2):
     """
     Visualize the difference in shape between two DataFrames
     :param df1:
