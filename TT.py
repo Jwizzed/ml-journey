@@ -98,3 +98,23 @@ def plot_shape_difference(df1, df2):
     plt.title('Difference in Shape between the Two DataFrames')
     plt.legend(title='DataFrames', loc='upper right')
     plt.show()
+
+
+def info():
+    """
+    Prints the information about the functions in this module
+    :return:
+    """
+    data = {
+        'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
+                     'plot_shape_difference'],
+        'Description': ['Walks through dir_path returning its contents',
+                        'Unzips a file',
+                        'Read the contents of the file and return them as a list',
+                        'Plots a random image from target_dir and target_class',
+                        'Visualize the difference in shape between two DataFrames']
+    }
+
+    # Create the DataFrame
+    df = pd.DataFrame(data)
+    print(df)
