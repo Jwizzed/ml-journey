@@ -122,13 +122,15 @@ def plot_shape_difference(df1: pd.DataFrame, df2: pd.DataFrame) -> None:
     return None
 
 
-def plot_binary_columns(df: pd.DataFrame, columns: List[str]) -> None:
+def plot_binary_columns(df: pd.DataFrame, columns: List[str],
+                        show_number: bool = True) -> None:
     """
     Plots the distribution of the binary columns in the DataFrame.
 
     Parameters:
         df (pd.DataFrame): The DataFrame containing the data.
         columns (List[str]): A list of column names (strings) representing binary columns to plot.
+        show_number (bool): If True, displays the count values above each bar.
 
     Returns:
         None. The function plots the count distribution of the binary columns.
@@ -154,12 +156,13 @@ def plot_binary_columns(df: pd.DataFrame, columns: List[str]) -> None:
         ax.set_title(f'Distribution of {column}')
 
         # Add count values above each bar
-        for p in ax.patches:
-            count = int(p.get_height())
-            x = p.get_x() + p.get_width() / 2
-            y = p.get_height()
-            ax.text(x, y, count, ha='center', fontsize=10, fontweight='bold',
-                    color='green')
+        if show_number:
+            for p in ax.patches:
+                count = int(p.get_height())
+                x = p.get_x() + p.get_width() / 2
+                y = p.get_height()
+                ax.text(x, y, count, ha='center', fontsize=10, fontweight='bold',
+                        color='green')
 
     # Add space between subplots
     plt.tight_layout()
