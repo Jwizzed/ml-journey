@@ -1,14 +1,22 @@
 import os
 import random
+import re
 import zipfile
 from typing import List
 
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
+import nltk
 import pandas as pd
 import seaborn as sns
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 from tabulate import tabulate
 from tqdm import tqdm
+
+nltk.download('punkt')
+nltk.download('wordnet')
 
 
 def report_dir(dir_path: str) -> None:
@@ -173,14 +181,7 @@ def plot_binary_columns(df: pd.DataFrame, columns: List[str],
     return None
 
 
-def preprocess_text(text):
-    import re
-    from nltk.tokenize import word_tokenize
-    from nltk.corpus import stopwords
-    from nltk.stem import PorterStemmer, WordNetLemmatizer
-    import nltk
-    nltk.download('punkt')
-    nltk.download('wordnet')
+def preprocess_text(text) -> str:
     """
     Preprocesses the input text by performing the following steps:
     1. Convert the text to lowercase.
@@ -207,49 +208,51 @@ def preprocess_text(text):
         "hello check out this link and"
     """
     # Convert to lowercase
-    text = text.lower()
+    try:
+        text = text.lower()
+        # Remove hyperlinks
+        text = re.sub(r'https?:\/\/.*[\r\n]*', '', text)
+        text = re.sub(r'http?:\/\/.*[\r\n]*', '', text)
 
-    # Remove hyperlinks
-    text = re.sub(r'https?:\/\/.*[\r\n]*', '', text)
-    text = re.sub(r'http?:\/\/.*[\r\n]*', '', text)
+        # Replace &amp, &lt, &gt with &,<,> respectively
+        text = text.replace(r'&amp;?', r'and')
+        text = text.replace(r'&lt;', r'<')
+        text = text.replace(r'&gt;', r'>')
 
-    # Replace &amp, &lt, &gt with &,<,> respectively
-    text = text.replace(r'&amp;?', r'and')
-    text = text.replace(r'&lt;', r'<')
-    text = text.replace(r'&gt;', r'>')
+        # Remove mentions
+        text = re.sub(r"(?:\@)\w+", '', text)
 
-    # Remove mentions
-    text = re.sub(r"(?:\@)\w+", '', text)
+        # Remove non-ASCII chars
+        text = text.encode("ascii", errors="ignore").decode()
 
-    # Remove non-ASCII chars
-    text = text.encode("ascii", errors="ignore").decode()
+        # Remove some punctuations (except . ! ?)
+        text = re.sub(r'[:"#$%&\*+,-/:;<=>@\\^_`{|}~]+', '', text)
+        text = re.sub(r'[!]+', '!', text)
+        text = re.sub(r'[?]+', '?', text)
+        text = re.sub(r'[.]+', '.', text)
+        text = re.sub(r"'", "", text)
+        text = re.sub(r"\(", "", text)
+        text = re.sub(r"\)", "", text)
 
-    # Remove some punctuations (except . ! ?)
-    text = re.sub(r'[:"#$%&\*+,-/:;<=>@\\^_`{|}~]+', '', text)
-    text = re.sub(r'[!]+', '!', text)
-    text = re.sub(r'[?]+', '?', text)
-    text = re.sub(r'[.]+', '.', text)
-    text = re.sub(r"'", "", text)
-    text = re.sub(r"\(", "", text)
-    text = re.sub(r"\)", "", text)
+        # Tokenization
+        tokens = word_tokenize(text)
 
-    # Tokenization
-    tokens = word_tokenize(text)
+        # Stop word removal
+        stop_words = set(stopwords.words('english'))
+        tokens = [token for token in tokens if token not in stop_words]
 
-    # Stop word removal
-    stop_words = set(stopwords.words('english'))
-    tokens = [token for token in tokens if token not in stop_words]
+        # Stemming
+        stemmer = PorterStemmer()
+        tokens = [stemmer.stem(token) for token in tokens]
 
-    # Stemming
-    stemmer = PorterStemmer()
-    tokens = [stemmer.stem(token) for token in tokens]
+        # Lemmatization
+        lemmatizer = WordNetLemmatizer()
+        tokens = [lemmatizer.lemmatize(token) for token in tokens]
 
-    # Lemmatization
-    lemmatizer = WordNetLemmatizer()
-    tokens = [lemmatizer.lemmatize(token) for token in tokens]
-
-    # Join tokens back into text
-    text = " ".join(tokens)
+        # Join tokens back into text
+        text = " ".join(tokens)
+    except TypeError:
+        raise "Input text is not a string, please check if input is NaN"
 
     return text
 
@@ -263,7 +266,8 @@ def info() -> None:
     """
     data = {
         'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
-                     'plot_shape_difference', 'plot_binary_columns', 'preprocess_text'],
+                     'plot_shape_difference', 'plot_binary_columns',
+                     'preprocess_text'],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
