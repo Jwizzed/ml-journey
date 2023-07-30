@@ -260,13 +260,14 @@ def info() -> None:
     """
     data = {
         'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
-                     'plot_shape_difference', 'plot_binary_columns'],
+                     'plot_shape_difference', 'plot_binary_columns', 'preprocess_text'],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
                         'Plots a random image from target_dir and target_class',
                         'Visualize the difference in shape between two DataFrames',
-                        'Plots the distribution of the binary columns in the DataFrame'],
+                        'Plots the distribution of the binary columns in the DataFrame',
+                        'Preprocesses the input text'],
     }
 
     # Create the DataFrame
