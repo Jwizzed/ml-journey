@@ -8,6 +8,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+from tqdm import tqdm
 
 
 def report_dir(dir_path: str) -> None:
@@ -114,7 +115,7 @@ def plot_binary_columns(df, columns: List[str]) -> None:
     # Create subplots with 2 columns and 2 rows
     fig, axes = plt.subplots(2, 2)
 
-    for index, column in enumerate(columns):
+    for index, column in tqdm(enumerate(columns)):
         ax = axes[index // 2, index % 2] # row index, columns index
         sns.countplot(x=column, data=df, ax=ax, palette='Set1')
         ax.set_xlabel(column)
