@@ -178,6 +178,9 @@ def preprocess_text(text):
     from nltk.tokenize import word_tokenize
     from nltk.corpus import stopwords
     from nltk.stem import PorterStemmer, WordNetLemmatizer
+    import nltk
+    nltk.download('punkt')
+    nltk.download('wordnet')
     """
     Preprocesses the input text by performing the following steps:
     1. Convert the text to lowercase.
