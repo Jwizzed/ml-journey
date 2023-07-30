@@ -161,7 +161,8 @@ def plot_binary_columns(df: pd.DataFrame, columns: List[str],
                 count = int(p.get_height())
                 x = p.get_x() + p.get_width() / 2
                 y = p.get_height()
-                ax.text(x, y, count, ha='center', fontsize=10, fontweight='bold',
+                ax.text(x, y, count, ha='center', fontsize=10,
+                        fontweight='bold',
                         color='green')
 
     # Add space between subplots
@@ -170,6 +171,84 @@ def plot_binary_columns(df: pd.DataFrame, columns: List[str],
     # Display the plots
     plt.show()
     return None
+
+
+def preprocess_text(text):
+    import re
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    from nltk.stem import PorterStemmer, WordNetLemmatizer
+    """
+    Preprocesses the input text by performing the following steps:
+    1. Convert the text to lowercase.
+    2. Remove hyperlinks.
+    3. Replace '&amp;', '&lt;', and '&gt;' with '&', '<', and '>', respectively.
+    4. Remove mentions (e.g., @user).
+    5. Remove non-ASCII characters.
+    6. Remove some punctuations (except '.', '!', and '?').
+    7. Tokenize the text into individual words.
+    8. Remove common stopwords from the tokenized words.
+    9. Apply stemming to reduce words to their base or root form. (Remove suffix e.g. running -> run)
+    10. Apply lemmatization to reduce words to their base or dictionary form. (e.g. better -> good)
+
+    Parameters:
+        text (str): The input text to be preprocessed.
+
+    Returns:
+        str: The preprocessed text.
+
+    Example:
+        >> text = "Hello @user! Check out this link: https://example.com"
+        >> preprocessed_text = preprocess_text(text)
+        >> print(preprocessed_text)
+        "hello check out this link and"
+    """
+    # Convert to lowercase
+    text = text.lower()
+
+    # Remove hyperlinks
+    text = re.sub(r'https?:\/\/.*[\r\n]*', '', text)
+    text = re.sub(r'http?:\/\/.*[\r\n]*', '', text)
+
+    # Replace &amp, &lt, &gt with &,<,> respectively
+    text = text.replace(r'&amp;?', r'and')
+    text = text.replace(r'&lt;', r'<')
+    text = text.replace(r'&gt;', r'>')
+
+    # Remove mentions
+    text = re.sub(r"(?:\@)\w+", '', text)
+
+    # Remove non-ASCII chars
+    text = text.encode("ascii", errors="ignore").decode()
+
+    # Remove some punctuations (except . ! ?)
+    text = re.sub(r'[:"#$%&\*+,-/:;<=>@\\^_`{|}~]+', '', text)
+    text = re.sub(r'[!]+', '!', text)
+    text = re.sub(r'[?]+', '?', text)
+    text = re.sub(r'[.]+', '.', text)
+    text = re.sub(r"'", "", text)
+    text = re.sub(r"\(", "", text)
+    text = re.sub(r"\)", "", text)
+
+    # Tokenization
+    tokens = word_tokenize(text)
+
+    # Stop word removal
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token not in stop_words]
+
+    # Stemming
+    stemmer = PorterStemmer()
+    tokens = [stemmer.stem(token) for token in tokens]
+
+    # Lemmatization
+    lemmatizer = WordNetLemmatizer()
+    tokens = [lemmatizer.lemmatize(token) for token in tokens]
+
+    # Join tokens back into text
+    text = " ".join(tokens)
+
+    return text
 
 
 def info() -> None:
