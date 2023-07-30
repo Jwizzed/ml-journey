@@ -143,17 +143,23 @@ def plot_binary_columns(df: pd.DataFrame, columns: List[str]) -> None:
     binary values (0 or 1), and the y-axis shows the count of occurrences for each value in the column.
     """
 
-    # Set a larger figure size for better visibility
     plt.figure(figsize=(12, 8))
-    # Create subplots with 2 columns and 2 rows
     fig, axes = plt.subplots(2, 2)
 
     for index, column in tqdm(enumerate(columns)):
-        ax = axes[index // 2, index % 2]  # row index, columns index
+        ax = axes[index // 2, index % 2]  # row index, column index
         sns.countplot(x=column, data=df, ax=ax, palette='Set1')
         ax.set_xlabel(column)
         ax.set_ylabel('Count')
         ax.set_title(f'Distribution of {column}')
+
+        # Add count values above each bar
+        for p in ax.patches:
+            count = int(p.get_height())
+            x = p.get_x() + p.get_width() / 2
+            y = p.get_height()
+            ax.text(x, y, count, ha='center', fontsize=10, fontweight='bold',
+                    color='green')
 
     # Add space between subplots
     plt.tight_layout()
