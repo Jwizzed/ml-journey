@@ -101,6 +101,34 @@ def plot_shape_difference(df1, df2):
     plt.show()
 
 
+def plot_binary_columns(df, columns: List[str]) -> None:
+    """
+    Plots the distribution of the binary columns in the DataFrame
+    :param df:
+    :param columns:
+    :return:
+    >> plot_binary_columns(df, binary_columns)
+    """
+    # Set a larger figure size for better visibility
+    plt.figure(figsize=(12, 8))
+    # Create subplots with 2 columns and 2 rows
+    fig, axes = plt.subplots(2, 2)
+
+    for index, column in enumerate(columns):
+        ax = axes[index // 2, index % 2] # row index, columns index
+        sns.countplot(x=column, data=df, ax=ax, palette='Set1')
+        ax.set_xlabel(column)
+        ax.set_ylabel('Count')
+        ax.set_title(f'Distribution of {column}')
+
+    # Add space between subplots
+    plt.tight_layout()
+
+    # Display the plots
+    plt.show()
+    return None
+
+
 def info():
     """
     Prints the information about the functions in this module
@@ -108,12 +136,13 @@ def info():
     """
     data = {
         'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
-                     'plot_shape_difference'],
+                     'plot_shape_difference', 'plot_binary_columns'],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
                         'Plots a random image from target_dir and target_class',
-                        'Visualize the difference in shape between two DataFrames']
+                        'Visualize the difference in shape between two DataFrames',
+                        'Plots the distribution of the binary columns in the DataFrame'],
     }
 
     # Create the DataFrame
