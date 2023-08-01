@@ -257,7 +257,7 @@ def preprocess_text(text) -> str:
     return text
 
 
-def sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
+def get_sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
     """
     Trains and evaluates various machine learning models on the given datasets and prints their accuracy scores.
 
