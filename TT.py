@@ -257,6 +257,50 @@ def preprocess_text(text) -> str:
     return text
 
 
+def sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
+    """
+    Trains and evaluates various machine learning models on the given datasets and prints their accuracy scores.
+
+    Parameters:
+        X_train (pd.DataFrame): The training input features as a DataFrame.
+        y_train (pd.DataFrame): The training target labels as a DataFrame.
+        X_test (pd.DataFrame): The test input features as a DataFrame.
+        y_test (pd.DataFrame): The test target labels as a DataFrame.
+
+    Returns:
+        None. The function prints the accuracy scores for each model on the test set.
+
+    Example:
+        >> X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=42)
+        >> sk_all_model_score(X_train, y_train, X_test, y_test)
+
+    This function takes training and test data in the form of DataFrames and evaluates multiple machine learning
+    models on the test set. It iterates over a predefined list of machine learning models (LogisticRegression,
+    KNeighborsClassifier, SVC, DecisionTreeClassifier), fits each model to the training data, predicts the test
+    data, and then calculates and prints the accuracy score for each model. The accuracy score is a commonly used
+    metric for classification tasks and represents the proportion of correctly predicted instances out of the total
+    number of instances in the test set.
+    """
+
+    from sklearn.metrics import accuracy_score
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.svm import SVC
+    from sklearn.tree import DecisionTreeClassifier
+
+    all_models = [LogisticRegression, KNeighborsClassifier, SVC,
+                  DecisionTreeClassifier]
+
+    for model in all_models:
+        curr_model = model()
+        curr_model.fit(X_train, y_train)
+        y_pred = curr_model.predict(X_test)
+        print(
+            f"Accuracy score for {model} is {accuracy_score(y_test, y_pred)}")
+    return None
+
+
+
 def info() -> None:
     """
     Prints the information about the functions in this module.
@@ -267,14 +311,16 @@ def info() -> None:
     data = {
         'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
                      'plot_shape_difference', 'plot_binary_columns',
-                     'preprocess_text'],
+                     'preprocess_text', 'sk_all_model_score'],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
                         'Plots a random image from target_dir and target_class',
                         'Visualize the difference in shape between two DataFrames',
                         'Plots the distribution of the binary columns in the DataFrame',
-                        'Preprocesses the input text'],
+                        'Preprocesses the input text',
+                        'Trains and evaluates various machine learning models on the given datasets and prints their accuracy scores',
+                        ]
     }
 
     # Create the DataFrame
