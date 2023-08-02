@@ -7,6 +7,10 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import pandas as pd
 from tabulate import tabulate
+import numpy as np
+
+import random
+from typing import List
 
 
 def report_dir(dir_path: str) -> None:
@@ -104,6 +108,61 @@ def get_train_time(start, end, device=None, machine=None):
     return round(total_time, 3)
 
 
+def display_random_images(dataset,
+                          classes: List[str] = None,
+                          n: int = 10,
+                          display_shape: bool = True,
+                          seed: int = None):
+    """
+    Displays n random images from a dataset.
+
+    Parameters:
+        dataset (torch.utils.data.Dataset): The dataset to display images from.
+        classes (List[str]): A list of class names.
+        n (int): The number of images to display.
+        display_shape (bool): If True, displays the shape of the image.
+        seed (int): The random seed to use.
+
+    Returns:
+        None
+    """
+
+    # Adjust display if n too high
+    if n > 10:
+        n = 10
+        display_shape = False
+        print(
+            f"For display purposes, n shouldn't be larger than 10, setting to 10 and removing shape display.")
+
+    # Set random seed
+    if seed:
+        random.seed(seed)
+
+    # Get random sample indexes
+    random_samples_idx = random.sample(range(len(dataset)), k=n)
+
+    # Setup plot
+    plt.figure(figsize=(16, 8))
+
+    # Loop through samples and display random samples
+    for i, targ_sample in enumerate(random_samples_idx):
+        targ_image, targ_label = dataset[targ_sample]["image"], \
+                                 dataset[targ_sample]["label"]
+
+        # Adjust image tensor shape for plotting: [color_channels, height, width] -> [color_channels, height, width]
+        targ_image_adjust = targ_image.permute(1, 2, 0)
+
+        # Plot adjusted samples
+        plt.subplot(1, n, i + 1)
+        plt.imshow(targ_image_adjust)
+        plt.axis("off")
+        if classes:
+            title = f"class: {classes[targ_label]}"
+            if display_shape:
+                title = title + f"\nshape: {targ_image_adjust.shape}"
+        plt.title(title)
+
+
 def info() -> None:
     """
     Prints the information about the functions in this module.
@@ -117,6 +176,7 @@ def info() -> None:
                      'get_lines',
                      'view_random_image',
                      'get_train_time',
+                     'display_random_images'
 
                      ],
         'Description': ['Walks through dir_path returning its contents',
@@ -124,6 +184,7 @@ def info() -> None:
                         'Read the contents of the file and return them as a list',
                         'Visualize the difference in shape between two DataFrames',
                         'Gets difference between start and end time',
+                        'Displays n random images from a dataset'
 
                         ]
     }
