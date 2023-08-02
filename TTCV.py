@@ -4,8 +4,9 @@ import os
 import zipfile
 from typing import List
 import matplotlib.pyplot as plt
-import tabulate
 import pandas as pd
+from timeit import default_timer as timer
+from tabulate import tabulate
 
 
 def report_dir(dir_path: str) -> None:
@@ -83,6 +84,24 @@ def view_random_image(target_dir: str, target_class: str) -> None:
     return None
 
 
+def get_train_time(start, end, device=None, machine=None):
+    """
+    Prints difference between start and end time.
+
+    Parameters:
+        start (float): Start time of computation (preferred in timeit format).
+        end (float): End time of computation.
+
+    Returns:
+        float: time between start and end in seconds (higher is longer).
+    """
+    total_time = end - start
+    if device:
+        print(f"\nTrain time on {machine} using PyTorch device {device}: {total_time:.3f} seconds\n")
+    else:
+        print(f"\nTrain time: {total_time:.3f} seconds\n")
+    return round(total_time, 3)
+
 
 def info() -> None:
     """
@@ -92,12 +111,19 @@ def info() -> None:
         None
     """
     data = {
-        'Function': ['report_dir', 'unzip', 'get_lines',
-                     'view_random_image'],
+        'Function': ['report_dir',
+                     'unzip',
+                     'get_lines',
+                     'view_random_image',
+                     'get_train_time',
+
+                     ],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
                         'Visualize the difference in shape between two DataFrames',
+                        'Gets difference between start and end time',
+
                         ]
     }
 
