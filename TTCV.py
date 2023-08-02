@@ -1,11 +1,11 @@
-import matplotlib.image as mpimg
-import random
 import os
+import random
 import zipfile
 from typing import List
+
+import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import pandas as pd
-from timeit import default_timer as timer
 from tabulate import tabulate
 
 
@@ -97,7 +97,8 @@ def get_train_time(start, end, device=None, machine=None):
     """
     total_time = end - start
     if device:
-        print(f"\nTrain time on {machine} using PyTorch device {device}: {total_time:.3f} seconds\n")
+        print(
+            f"\nTrain time on {machine} using PyTorch device {device}: {total_time:.3f} seconds\n")
     else:
         print(f"\nTrain time: {total_time:.3f} seconds\n")
     return round(total_time, 3)

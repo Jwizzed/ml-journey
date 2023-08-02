@@ -1,10 +1,8 @@
 import os
-import random
 import re
 import zipfile
 from typing import List
 
-import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import nltk
 import pandas as pd
@@ -71,27 +69,6 @@ def get_lines(file_name: str) -> List[str]:
     """
     with open(file_name, "r") as f:
         return f.readlines()
-
-
-def view_random_image(target_dir: str, target_class: str) -> None:
-    """
-    Plots a random image from target_dir and target_class.
-
-    Parameters:
-        target_dir (str): The path to the target directory.
-        target_class (str): The name of the target class.
-
-    Returns:
-        None
-    """
-    random_img = random.sample(
-        os.listdir(os.path.join(target_dir, target_class)), 1)
-    img = mpimg.imread(os.path.join(target_dir, target_class, random_img[0]))
-    plt.imshow(img)
-    plt.title(target_class)
-    plt.axis("off")
-    print(f"Image shape: {img.shape}")
-    return None
 
 
 def plot_shape_difference(df1: pd.DataFrame, df2: pd.DataFrame) -> None:
@@ -257,7 +234,8 @@ def preprocess_text(text) -> str:
     return text
 
 
-def get_sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
+def get_sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame,
+                           X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
     """
     Trains and evaluates various machine learning models on the given datasets and prints their accuracy scores.
 
@@ -300,7 +278,6 @@ def get_sk_all_model_score(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test:
     return None
 
 
-
 def info() -> None:
     """
     Prints the information about the functions in this module.
@@ -309,13 +286,12 @@ def info() -> None:
         None
     """
     data = {
-        'Function': ['report_dir', 'unzip', 'get_lines', 'view_random_image',
+        'Function': ['report_dir', 'unzip', 'get_lines',
                      'plot_shape_difference', 'plot_binary_columns',
                      'preprocess_text', 'sk_all_model_score'],
         'Description': ['Walks through dir_path returning its contents',
                         'Unzips a file',
                         'Read the contents of the file and return them as a list',
-                        'Plots a random image from target_dir and target_class',
                         'Visualize the difference in shape between two DataFrames',
                         'Plots the distribution of the binary columns in the DataFrame',
                         'Preprocesses the input text',
