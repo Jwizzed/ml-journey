@@ -161,6 +161,32 @@ def display_random_images(dataset,
             if display_shape:
                 title = title + f"\nshape: {targ_image_adjust.shape}"
         plt.title(title)
+    return None
+
+
+def plot_model_results(results):
+    """
+    Plots the results of a model.
+
+    Parameters:
+        results (dict): A dictionary containing the results of a model.
+
+    Returns:
+        None
+    """
+
+    epochs = len(results['train_loss'])
+    fig, axs = plt.subplots(1, 2, figsize=(15,5))
+    axs[0].plot(range(epochs), results['train_loss'], label='Train Loss')
+    axs[0].plot(range(epochs), results['test_loss'], label='Test Loss')
+    axs[0].set_title('Loss')
+    axs[0].legend()
+    axs[1].plot(range(epochs), results['train_acc'], label='Train Accuracy')
+    axs[1].plot(range(epochs), results['test_acc'], label='Test Accuracy')
+    axs[1].set_title('Accuracy')
+    axs[1].legend()
+    plt.show()
+    return None
 
 
 def info() -> None:
@@ -176,7 +202,9 @@ def info() -> None:
                      'get_lines',
                      'view_random_image',
                      'get_train_time',
-                     'display_random_images'
+                     'display_random_images',
+                     'plot_model_results',
+
 
                      ],
         'Description': ['Walks through dir_path returning its contents',
@@ -184,8 +212,9 @@ def info() -> None:
                         'Read the contents of the file and return them as a list',
                         'Visualize the difference in shape between two DataFrames',
                         'Gets difference between start and end time',
-                        'Displays n random images from a dataset'
-
+                        'Displays n random images from a dataset',
+                        'Plots the results of a model',
+                        
                         ]
     }
 
