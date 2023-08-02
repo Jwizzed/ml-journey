@@ -11,7 +11,7 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from tabulate import tabulate
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 nltk.download('punkt')
 nltk.download('wordnet')
