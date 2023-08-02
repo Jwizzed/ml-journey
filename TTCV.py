@@ -214,7 +214,7 @@ def info() -> None:
                         'Gets difference between start and end time',
                         'Displays n random images from a dataset',
                         'Plots the results of a model',
-                        
+
                         ]
     }
 
