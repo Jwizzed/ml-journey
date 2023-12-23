@@ -1,0 +1,3 @@
+[submodule "note"]
+	path = note
+	url = https://github.com/Jwizzed/-Note-Machine-Learning-A-Z.git
