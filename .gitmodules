@@ -1,3 +1,6 @@
 [submodule "note"]
 	path = note
 	url = https://github.com/Jwizzed/-Note-Machine-Learning-A-Z.git
+[submodule "CVnote"]
+	path = CVnote
+	url = https://github.com/Jwizzed/-Note-Modern-Computer-Vision-GPT-PyTorch-Keras-OpenCV4-in-2024-.git
