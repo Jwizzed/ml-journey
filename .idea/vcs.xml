@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CVnote" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Other Datasets/(SkimLit) pubmed-rct/pubmed-rct" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Other Datasets/pubmed-rct" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/TaskToSubtask" vcs="Git" />
